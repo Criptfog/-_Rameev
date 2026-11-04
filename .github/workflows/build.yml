@@ -24,10 +24,26 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Установка зависимостей проекта
-        run: npm install
+      - name: Автоматическая подготовка окружения и папок
+        run: |
+          # 1. Создаем папку www и перемещаем файлы туда, если они лежат в корне
+          mkdir -p www
+          cp -f index.html manifest.json sw.js www/ 2>/dev/null || true
 
-      - name: Инициализация Android платформы
+          # 2. Если package.json отсутствует, создаем его со всеми зависимостями
+          if [ ! -f "package.json" ]; then
+            npm init -y
+            npm install @capacitor/core@latest @capacitor/cli@latest @capacitor/android@latest
+          else
+            npm install
+          fi
+
+          # 3. Если capacitor.config.json отсутствует, создаем его
+          if [ ! -f "capacitor.config.json" ] && [ ! -f "capacitor.config.ts" ]; then
+            npx cap init "Дневник Rameev" "ru.rameevcollege.dnevnik" --web-dir www
+          fi
+
+      - name: Подготовка Android проекта
         run: |
           npx cap add android || true
           npx cap sync android
