@@ -11,4 +11,4 @@
                           
                           Интерфейс: Современные веб-компоненты и адаптивная верстка
                              
-                  https://github.com/Criptfog/-_Rameev/releases/tag/UpdateUI АКТУАЛЬНАЯ ВЕРСИЯ
+                
